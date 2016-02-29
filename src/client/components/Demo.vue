@@ -2,7 +2,7 @@
   <div>
     <div id="demo__upload__dropzone">
       <label for="demo__upload__button">上传图片</label>
-      <input id="demo__upload__button" type="file" @change="upload">
+      <input id="demo__upload__button" type="file">
     </div>
   </div>
 </template>

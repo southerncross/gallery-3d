@@ -1,9 +1,19 @@
 import bcrypt from 'bcrypt'
 
 import bookshelf from '../bookshelf'
+import Gallery from './Gallery'
+import Photo from './Photo'
 
 export default bookshelf.Model.extend({
   tableName: 'users',
+
+  galleries() {
+    return this.hasMany(Gallery)
+  },
+
+  photos() {
+    return this.hasMany(Photo)
+  },
 
   initialize() {
     this.on('creating', this.hashPassword, this)

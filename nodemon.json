@@ -1,6 +1,6 @@
 {
   "verbose": true,
-  "ignore": ["src/server/public/"],
+  "ignore": ["src/server/public/", "src/server/bin/"],
   "events": {
     "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'"
   },

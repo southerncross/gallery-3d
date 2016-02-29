@@ -1,7 +1,27 @@
 import passport from 'passport'
 import LocalStrategy from 'passport-local'
 
-import User from './modal/User'
+import log from './log'
+import User from './models/User'
+
+passport.serializeUser((user, done) => {
+  done(null, user.id)
+})
+
+passport.deserializeUser((id, done) => {
+  new User({ id }).fetch()
+  .then((user) => {
+    if (!user) {
+      done(null, false)
+    } else {
+      done(null, user.serialize())
+    }
+  })
+  .catch((err) => {
+    log.error(err)
+    done(err)
+  })
+})
 
 passport.use(new LocalStrategy({
   usernameField: 'email',
@@ -10,14 +30,13 @@ passport.use(new LocalStrategy({
   new User({ email })
   .fetch()
   .then(function(user) {
-    console.log('boring', user)
     if (!user) {
       return done(null, false, { message: 'Incorrect username.' })
     }
-    if (!user.validPassword(password)) {
+    if (!User.validPassword(email, password)) {
       return done(null, false, { message: 'Incorrect password.' })
     }
-    return done(null, user)
+    return done(null, user.serialize())
   })
   .catch(done)
 }))

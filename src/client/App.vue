@@ -1,15 +1,14 @@
 <template>
   <div class="app full-height">
+    <form action="/logout" method="post">
+      <button type="submit">注销</button>
+    </form>
     <a v-link="{ name: 'demo' }">Demo page</a>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {
-  data () {
-  }
-}
 </script>
 
 <style>

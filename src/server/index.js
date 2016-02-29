@@ -1,4 +1,7 @@
 import express from 'express'
+import passport from 'passport'
+import session from 'express-session'
+import SessionStoreCreator from 'connect-session-knex'
 import path from 'path'
 import favicon from 'serve-favicon'
 import logger from 'morgan'
@@ -8,11 +11,14 @@ import webpack from 'webpack'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 
+import './passport'
+import bookshelf from './bookshelf'
 import log from './log'
 import router from './router'
 import config from '../../webpack.config'
 
 const app = express()
+const SessionStore = SessionStoreCreator(session)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -25,6 +31,17 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false,
+  store: new SessionStore({
+    knex: bookshelf.knex,
+    tablename: 'sessions'
+  })
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 const compiler = webpack(config)
 

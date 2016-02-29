@@ -1,0 +1,14 @@
+extends layout
+
+block append head
+  title 登陆
+
+block content
+  div.login-container
+    form(method='post')
+      if message
+        span.login-error= message
+      div.login-input
+        input(id='email', name='email', type='email' placeholder='邮箱')
+        input(id='password', name='password', type='password' placeholder='密码')
+      button.login-submit(type='submit') 登录

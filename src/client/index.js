@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import App from './App'
-import Demo from './components/Demo'
+import UploadPhotos from './components/UploadPhotos'
+import MyPhotos from './components/MyPhotos'
 
 Vue.config.debug = true
 Vue.use(Router)
@@ -10,9 +11,14 @@ Vue.use(Router)
 const router = new Router()
 
 router.map({
-  '/demo': {
-    name: 'demo',
-    component: Demo
+  '/upload-photos': {
+    name: 'upload-photos',
+    component: UploadPhotos
+  },
+
+  '/my-photos': {
+    name: 'my-photos',
+    component: MyPhotos
   }
 })
 

@@ -3,7 +3,8 @@
     <form action="/logout" method="post">
       <button type="submit">注销</button>
     </form>
-    <a v-link="{ name: 'demo' }">Demo page</a>
+    <a v-link="{ name: 'my-photos' }">我的照片</a>
+    <a v-link="{ name: 'upload-photos' }">上传照片</a>
     <router-view></router-view>
   </div>
 </template>

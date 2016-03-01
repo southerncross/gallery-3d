@@ -31,5 +31,6 @@ router.post('/logout', (req, res) => {
 router.get('/api/uptoken', uploader.getUptokenAPI)
 
 router.post('/api/photos', photos.savePhotoAPI)
+router.get('/api/photos', photos.getPhotosAPI)
 
 export default router

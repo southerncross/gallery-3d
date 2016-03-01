@@ -1,8 +1,8 @@
 import express from 'express'
 import passport from 'passport'
 
-import log from './log'
 import uploader from './controllers/uploader'
+import galleries from './controllers/galleries'
 
 const router = express.Router()
 
@@ -29,5 +29,7 @@ router.post('/logout', (req, res) => {
 })
 
 router.get('/api/uptoken', uploader.getUptokenAPI)
+
+router.post('/api/photos', galleries.savePhotoAPI)
 
 export default router

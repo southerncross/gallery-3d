@@ -1,11 +1,11 @@
 <template>
 <div>
-  <div v-for="photo in photos" class="my-photos__item">
+  <div v-if="photos.length > 0" v-for="photo in photos" class="my-photos__item">
     <img class="my-photos__item__img" :src="photo.url"/>
     <span>{{photo.name}}</span>
   </div>
-  <div v-if="photos.length === 0">
-    没有任何照片
+  <div v-else>
+    还没有任何照片
     <a v-link="{ name: 'upload-photos' }">现在去上传</a>
   </div>
 </div>
@@ -41,6 +41,7 @@ export default {
 .my-photos__item
   display inline-block
   width 120px
+  margin 10px
   &__img
     display block
     width 100%

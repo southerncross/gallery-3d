@@ -3,6 +3,7 @@ import passport from 'passport'
 
 import uploader from './controllers/uploader'
 import photos from './controllers/photos'
+import galleries from './controllers/galleries'
 
 const router = express.Router()
 
@@ -32,5 +33,8 @@ router.get('/api/uptoken', uploader.getUptokenAPI)
 
 router.post('/api/photos', photos.savePhotoAPI)
 router.get('/api/photos', photos.getPhotosAPI)
+
+router.post('/api/galleries', galleries.saveGallery)
+router.get('/api/galleries', galleries.getGalleries)
 
 export default router

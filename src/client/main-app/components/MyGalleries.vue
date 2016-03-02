@@ -5,7 +5,7 @@
       <span>{{gallery.name}}</span>
       <span>包含{{gallery.photos.length}}张照片</span>
       <div v-if="gallery.accessToken">
-        <span>分享链接: {{gallery.accessToken.token}}</span>
+        <a :src="'/share/' + gallery.accessToken.token">查看</a>
       </div>
       <div v-else>
         <button @click="share(gallery)">分享</button>

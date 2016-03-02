@@ -36,7 +36,9 @@ router.get('/api/uptoken', uploader.getUptokenAPI)
 router.post('/api/photos', photos.savePhotoAPI)
 router.get('/api/photos', photos.getPhotosAPI)
 
-router.post('/api/galleries', galleries.saveGallery)
-router.get('/api/galleries', galleries.getGalleries)
+router.post('/api/galleries', galleries.saveGalleryAPI)
+router.get('/api/galleries', galleries.getGalleriesAPI)
+
+router.put('/api/share-gallery/:galleryId', galleries.shareGalleryAPI)
 
 export default router

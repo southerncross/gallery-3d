@@ -1,8 +1,8 @@
-import bookshelf from '../bookshelf'
+import Base from './Base'
 import User from './User'
 import Gallery from './Gallery'
 
-export default bookshelf.Model.extend({
+export default Base.extend({
   tableName: 'photos',
 
   owner() {

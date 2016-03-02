@@ -46,7 +46,6 @@ export default {
           console.error(err)
           return
         }
-        console.log('boring save ok')
       })
     }
   },
@@ -98,7 +97,6 @@ export default {
         },
         UploadComplete: function() {
           // 队列文件处理完毕后,处理相关的事情
-          // console.error('boring upload complate')
         }
       }
     })

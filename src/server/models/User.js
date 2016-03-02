@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt'
 
-import bookshelf from '../bookshelf'
+import Base from './Base'
 import Gallery from './Gallery'
 import Photo from './Photo'
 
-export default bookshelf.Model.extend({
+export default Base.extend({
   tableName: 'users',
 
   galleries() {

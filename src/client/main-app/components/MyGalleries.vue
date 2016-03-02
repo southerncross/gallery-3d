@@ -4,6 +4,12 @@
     <div v-for="gallery in galleries">
       <span>{{gallery.name}}</span>
       <span>包含{{gallery.photos.length}}张照片</span>
+      <div v-if="gallery.accessToken">
+        <span>分享链接: {{gallery.accessToken.token}}</span>
+      </div>
+      <div v-else>
+        <button @click="share(gallery)">分享</button>
+      </div>
     </div>
   </div>
   <div v-else>
@@ -22,6 +28,23 @@ export default {
   data() {
     return {
       galleries: []
+    }
+  },
+
+  methods: {
+    share(gallery) {
+      const that = this
+      request.put(`/api/share-gallery/${gallery.id}`)
+      .end((err, res) => {
+        if (err || !res.ok) {
+          console.error(err)
+          return
+        }
+        const idx = that.galleries.indexOf(gallery)
+        if (idx >= 0) {
+          that.galleries[idx] = res.body
+        }
+      })
     }
   },
 

@@ -1,10 +1,11 @@
 import uuid from 'node-uuid'
 
-import bookshelf from '../bookshelf'
+import Base from './Base'
 import User from './User'
 import Photo from './Photo'
+import AccessToken from './AccessToken'
 
-export default bookshelf.Model.extend({
+export default Base.extend({
   tableName: 'galleries',
 
   owner() {
@@ -13,6 +14,10 @@ export default bookshelf.Model.extend({
 
   photos() {
     return this.belongsToMany(Photo)
+  },
+
+  accessToken() {
+    return this.hasOne(AccessToken)
   },
 
   initialize() {

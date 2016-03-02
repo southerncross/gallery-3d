@@ -11,7 +11,8 @@ const db = knex({
     password: '',
     database: 'gallery-dev',
     charset: 'utf8'
-  }
+  },
+  debug: true
 })
 
 if (!db) {

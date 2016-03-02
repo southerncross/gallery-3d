@@ -33,7 +33,7 @@ Promise.resolve()
     }
     log.info('Creating `galleries` ...')
     return knex.schema.createTable('galleries', (table) => {
-      table.increments('id')
+      table.string('id').primary()
       table.string('name')
       table.string('description')
       table.integer('user_id').unsigned().references('users.id').onDelete('SET NULL').onUpdate('CASCADE')
@@ -46,7 +46,7 @@ Promise.resolve()
     if (exists) {
       return
     }
-    log.info('Creating `photos`')
+    log.info('Creating `photos` ...')
     return knex.schema.createTable('photos', (table) => {
       table.increments('id')
       table.string('name')
@@ -65,8 +65,22 @@ Promise.resolve()
     log.info('Creating `galleries_photos`')
     return knex.schema.createTable('galleries_photos', (table) => {
       table.increments('id')
-      table.integer('gallery_id').unsigned().references('galleries.id').onDelete('SET NULL').onUpdate('CASCADE')
+      table.string('gallery_id').references('galleries.id').onDelete('SET NULL').onUpdate('CASCADE')
       table.integer('photo_id').unsigned().references('photos.id').onDelete('SET NULL').onUpdate('CASCADE')
+      table.dateTime('created_at').defaultTo(knex.fn.now())
+    })
+  })
+)
+.then(() => knex.schema.hasTable('access_tokens')
+  .then((exists) => {
+    if (exists) {
+      return
+    }
+    log.info('Creating `access_tokens` ..')
+    return knex.schema.createTable('access_tokens', (table) => {
+      table.string('token').primary()
+      table.boolean('valid').defaultTo(true)
+      table.string('gallery_id').references('galleries.id').onDelete('SET NULL').onUpdate('CASCADE')
       table.dateTime('created_at').defaultTo(knex.fn.now())
     })
   })

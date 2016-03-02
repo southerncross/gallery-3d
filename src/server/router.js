@@ -11,11 +11,13 @@ const router = express.Router()
 router.get('/', (req, res) => {
   if (req.user) {
     res.cookie('user_email', req.user.email)
-    res.render('index')
+    res.render('main-app')
   } else {
     res.redirect('/login')
   }
 })
+
+router.get('/share', (req, res) => res.render('share-app'))
 
 router.get('/login', (req, res) => res.render('login'))
 router.post('/login', passport.authenticate('local', {

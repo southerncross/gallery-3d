@@ -1,8 +1,10 @@
 import passport from 'passport'
-import LocalStrategy from 'passport-local'
+import { Strategy as LocalStrategy } from 'passport-local'
+import { Strategy as BearerStrategy } from 'passport-http-bearer'
 
 import log from './log'
 import User from './models/User'
+import AccessToken from './models/AccessToken'
 
 passport.serializeUser((user, done) => {
   done(null, user.id)
@@ -29,7 +31,7 @@ passport.use(new LocalStrategy({
 }, (email, password, done) => {
   new User({ email })
   .fetch()
-  .then(function(user) {
+  .then((user) => {
     if (!user) {
       return done(null, false, { message: 'Incorrect username.' })
     }
@@ -37,6 +39,21 @@ passport.use(new LocalStrategy({
       return done(null, false, { message: 'Incorrect password.' })
     }
     return done(null, user.serialize())
+  })
+  .catch(done)
+}))
+
+passport.use(new BearerStrategy((token, done) => {
+  new AccessToken({ token })
+  .fetch({withRelated: ['Gallery', 'Photo']})
+  .then((model) => {
+    if (!model) {
+      return done(null, false, { message: '无效的token' })
+    }
+    if (!model.get('valid')) {
+      return done(null, false, { message: 'token已过期' })
+    }
+    return done(null, model.serialize())
   })
   .catch(done)
 }))

@@ -2,11 +2,14 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: path.join(__dirname, 'src/client/index.js'),
+  entry: {
+    'main-app': path.join(__dirname, 'src/client/main-app/index.js'),
+    'share-app': path.join(__dirname, 'src/client/share-app/index.js')
+  },
   output: {
     path: path.join(__dirname, 'src/server/public/javascripts/'),
     publicPath: '/javascripts/',
-    filename: 'build.js'
+    filename: '[name].js'
   },
   resolve: {
     extensions: ['', '.js', '.vue']

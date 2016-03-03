@@ -1,11 +1,13 @@
 <template>
 <div>
+  <div id="stats-output"></div>
   <div id="gallery-canvas"></div>
 </div>
 </template>
 
 <script>
 import THREE from 'three'
+import Stats from 'Stats'
 
 export default {
   name: 'Gallery',
@@ -18,6 +20,20 @@ export default {
   },
 
   ready() {
+
+    const initStats = function() {
+      const stats = new Stats();
+      stats.setMode(0);
+
+      stats.domElement.style.position = 'absolute';
+      stats.domElement.style.left = '0px';
+      stats.domElement.style.top = '0px';
+
+      document.getElementById('stats-output').appendChild(stats.domElement);
+
+      return stats;
+    };
+
     const webGLRenderer = new THREE.WebGLRenderer()
     webGLRenderer.setClearColor(new THREE.Color(0x000000, 1.0))
     webGLRenderer.setSize(window.innerWidth, window.innerHeight)
@@ -25,6 +41,7 @@ export default {
 
     document.getElementById('gallery-canvas').appendChild(webGLRenderer.domElement)
 
+    const stats = initStats()
     const scene = new THREE.Scene()
 
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
@@ -50,10 +67,12 @@ export default {
     scene.add(cube)
 
     const render = () => {
+      stats.update()
       webGLRenderer.render(scene, camera)
+      requestAnimationFrame(render)
     }
 
-    requestAnimationFrame(render)
+    render()
   }
 }
 </script>

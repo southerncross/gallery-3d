@@ -12,7 +12,7 @@ const db = knex({
     database: 'gallery-dev',
     charset: 'utf8'
   },
-  debug: true
+  debug: false // <---- knex debug log
 })
 
 if (!db) {

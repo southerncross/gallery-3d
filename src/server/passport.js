@@ -45,15 +45,18 @@ passport.use(new LocalStrategy({
 
 passport.use(new BearerStrategy((token, done) => {
   new AccessToken({ token })
-  .fetch({withRelated: ['Gallery', 'Photo']})
-  .then((model) => {
-    if (!model) {
+  .fetch({ withRelated: 'gallery' })
+  .then((accessToken) => {
+    if (!accessToken) {
       return done(null, false, { message: '无效的token' })
     }
-    if (!model.get('valid')) {
+    if (!accessToken.get('valid')) {
       return done(null, false, { message: 'token已过期' })
     }
-    return done(null, model.serialize())
+    done(null, accessToken.toJSON())
   })
-  .catch(done)
+  .catch((err) => {
+    log.error(err)
+    done(err)
+  })
 }))

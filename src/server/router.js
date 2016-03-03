@@ -17,7 +17,9 @@ router.get('/', (req, res) => {
   }
 })
 
-router.get('/share', (req, res) => res.render('share-app'))
+router.get('/share', passport.authenticate('bearer', {
+  session: false
+}), galleries.renderSharePage)
 
 router.get('/login', (req, res) => res.render('login'))
 router.post('/login', passport.authenticate('local', {

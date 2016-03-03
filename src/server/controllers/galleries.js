@@ -39,8 +39,18 @@ function shareGalleryAPI(req, res) {
   .catch((err) => res.status(403).json({ message: err }))
 }
 
+function renderSharePage(req, res) {
+  const galleryId = req.user.gallery.id
+
+  new Gallery({ id: galleryId })
+  .fetch({ withRelated: 'photos' })
+  .then((gallery) => res.render('share-app', { data: { gallery } }))
+  .catch((err) => res.status(403).json({ message: err }))
+}
+
 export default {
   saveGalleryAPI,
   getGalleriesAPI,
-  shareGalleryAPI
+  shareGalleryAPI,
+  renderSharePage
 }

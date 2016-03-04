@@ -1,6 +1,10 @@
 <template>
 <div>
   <div id="stats-output"></div>
+  <div v-if="!isPointerLocked" id="instructions">
+    按Esc退出
+    <button @click="start">开始</button>
+  </div>
   <div id="gallery-canvas"></div>
 </div>
 </template>
@@ -9,8 +13,17 @@
 import THREE from 'three'
 import Stats from 'Stats'
 
+import Fullscreen from '../libs/Fullscreen'
+import PointerLock from '../libs/PointerLock'
+
 export default {
   name: 'Gallery',
+
+  data() {
+    return {
+      isPointerLocked: false
+    }
+  },
 
   props: {
     data: {
@@ -19,20 +32,53 @@ export default {
     }
   },
 
+  methods: {
+    start() {
+      try {
+        Fullscreen.requestFullscreen()
+      } catch (ohoh) {
+        try {
+          PointerLock.requestPointerLock()
+        } catch (err) {
+          console.error(err)
+        }
+      }
+    },
+
+    fullscreenListener(err, inFullscreen) {
+      if (err) {
+        console.error(err)
+      }
+      if (inFullscreen) {
+        try {
+          PointerLock.requestPointerLock()
+        } catch (err) {
+          console.error(err)
+        }
+      }
+    },
+
+    pointerLockListener(err, isPointerLocked) {
+      if (err) {
+        console.error(err)
+      }
+      this.isPointerLocked = !err && isPointerLocked
+    }
+  },
+
   ready() {
-
     const initStats = function() {
-      const stats = new Stats();
-      stats.setMode(0);
+      const stats = new Stats()
+      stats.setMode(0)
 
-      stats.domElement.style.position = 'absolute';
-      stats.domElement.style.left = '0px';
-      stats.domElement.style.top = '0px';
+      stats.domElement.style.position = 'absolute'
+      stats.domElement.style.left = '0px'
+      stats.domElement.style.top = '0px'
 
-      document.getElementById('stats-output').appendChild(stats.domElement);
+      document.getElementById('stats-output').appendChild(stats.domElement)
 
-      return stats;
-    };
+      return stats
+    }
 
     const webGLRenderer = new THREE.WebGLRenderer()
     webGLRenderer.setClearColor(new THREE.Color(0x000000, 1.0))
@@ -73,9 +119,25 @@ export default {
     }
 
     render()
+
+    Fullscreen.addFullscreenListener(this.fullscreenListener)
+    PointerLock.addPointerLockListener(this.pointerLockListener)
+  },
+
+  beforeDestroy() {
+    Fullscreen.removeFullscreenListener(this.fullscreenListener)
+    PointerLock.removePointerLockListener(this.pointerLockListener)
   }
 }
 </script>
 
 <style lang="stylus">
+#instructions
+  position absolute
+  left 50%
+  top 50%
+  width 200px
+  height 200px
+  background-color green
+  transform translate(-50%, -50%)
 </style>

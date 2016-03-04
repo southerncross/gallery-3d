@@ -1,7 +1,6 @@
 <template>
   <div class="app full-height">
-    This is sharing gallery.
-    <gallery data="gallery"></gallery>
+    <gallery :data="data"></gallery>
   </div>
 </template>
 
@@ -13,7 +12,7 @@ export default {
 
   data() {
     return {
-      gallery: window['gallery-3d'].data
+      data: window['gallery-3d'].data
     }
   },
 

@@ -43,6 +43,11 @@ export default {
     const statsDom = document.getElementById('stats-output')
     const canvasDom = document.getElementById('gallery-canvas')
     this.three = new ThreeGallery({ statsDom, canvasDom, galleryInfo })
+    this.three.init()
+  },
+
+  beforeDestroy() {
+    this.three.destroy()
   }
 }
 </script>

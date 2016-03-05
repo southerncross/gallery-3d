@@ -1,6 +1,8 @@
 import THREE from 'three'
 import Stats from 'Stats'
 
+import MoveControl from './MoveControl'
+
 function createMeshFromPhoto(photo) {
   const geometry = new THREE.BoxGeometry(20, 20, 20)
   const material = new THREE.MeshLambertMaterial({ color: '#ffffff', emissive: '#a4a4a4' })
@@ -15,20 +17,19 @@ class ThreeGallery {
       renderer: null,
       scene: null,
       camera: null,
-      controls: null,
+      moveControl: null,
       keepRendering: false
     }
 
-    console.error()
-
-    this.__init = this.__init.bind(this)
     this.__initScene = this.__initScene.bind(this)
     this.__initCamera = this.__initCamera.bind(this)
-    this.__initControls = this.__initControls.bind(this)
+    this.__initMoveControl = this.__initMoveControl.bind(this)
     this.__initLight = this.__initLight.bind(this)
     this.__initAxes = this.__initAxes.bind(this)
     this.__initPhotos = this.__initPhotos.bind(this)
     this.__render = this.__render.bind(this)
+    this.init = this.init.bind(this)
+    this.destroy = this.destroy.bind(this)
     this.startRendering = this.startRendering.bind(this)
     this.stopRendering = this.stopRendering.bind(this)
     this.addPhotos = this.addPhotos.bind(this)
@@ -61,17 +62,6 @@ class ThreeGallery {
       console.warn('No photo is provided, empty gallery will be rendered.')
       this.photos = []
     }
-
-    this.__init()
-  }
-
-  __init() {
-    this.__initScene()
-    this.__initCamera()
-    this.__initControls()
-    this.__initLight()
-    this.__initAxes()
-    this.__initPhotos()
   }
 
   __initScene() {
@@ -87,12 +77,12 @@ class ThreeGallery {
     this.three.camera = camera
   }
 
-  __initControls() {
+  __initMoveControl() {
     const { scene, camera } = this.three
-    const controls = new THREE.PointerLockControls(camera)
-    controls.getObject().position.z = 30
-    controls.getObject().showCameraVisible = true
-    scene.add(controls.getObject())
+    const control = new MoveControl({ camera })
+    control.init()
+    scene.add(control.getObject())
+    this.three.moveControl = control
   }
 
   __initLight() {
@@ -114,6 +104,19 @@ class ThreeGallery {
     })
   }
 
+  init() {
+    this.__initScene()
+    this.__initCamera()
+    this.__initMoveControl()
+    this.__initLight()
+    this.__initAxes()
+    this.__initPhotos()
+  }
+
+  destroy() {
+    this.moveControl.destroy()
+  }
+
   __render() {
     const { stats, renderer, scene, camera, keepRendering } = this.three
     if (stats) {
@@ -126,12 +129,14 @@ class ThreeGallery {
   }
 
   startRendering() {
-    this.keepRendering = true
+    this.three.keepRendering = true
+    this.three.moveControl.enable()
     this.__render()
   }
 
   stopRendering() {
-    this.keepRendering = false
+    this.three.keepRendering = false
+    this.three.moveControl.disable()
   }
 
   addPhotos(photos) {

@@ -1,7 +1,11 @@
+import THREE from 'three'
+
 class MoveControl {
-  constructor({ controls, canJump }) {
-    this.controls = controls
-    this.canJump = canJump
+  constructor({ camera }) {
+    this.control = new THREE.PointerLockControls(camera)
+    this.control.getObject().position.z = 30
+    this.control.getObject().showCameraVisible = true
+    this.canJump = true
     this.move = {
       forward: false,
       left: false,
@@ -9,16 +13,15 @@ class MoveControl {
       right: false,
       jump: false
     }
-    this.velocity = {
-      x: 0,
-      y: 0,
-      z: 0
-    }
+    this.velocity = new THREE.Vector3()
 
     this.__onKeyDown = this.__onKeyDown.bind(this)
     this.__onKeyUp = this.__onKeyUp.bind(this)
-    this.addMoveListener = this.addMoveListener.bind(this)
-    this.removeMoveListener = this.removeMoveListener.bind(this)
+    this.enable = this.enable.bind(this)
+    this.disable = this.disable.bind(this)
+    this.init = this.init.bind(this)
+    this.destroy = this.destroy.bind(this)
+    this.getObject = () => this.control.getObject()
   }
 
   __onKeyDown(event) {
@@ -69,12 +72,21 @@ class MoveControl {
     }
   }
 
-  addMoveListener() {
+  enable() {
+    this.control.enabled = true
+  }
+
+  disable() {
+    this.velocity.set(0, 0, 0)
+    this.control.enabled = false
+  }
+
+  init() {
     document.addEventListener('keydown', this.__onKeyDown, false)
     document.addEventListener('keyup', this.__onKeyUp, false)
   }
 
-  removeMoveListener() {
+  destroy() {
     document.removeEventListener('keydown', this.__onKeyDown, false)
     document.removeEventListener('keyup', this.__onKeyUp, false)
   }

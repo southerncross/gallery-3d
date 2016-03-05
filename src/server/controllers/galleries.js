@@ -44,7 +44,7 @@ function renderSharePage(req, res) {
 
   new Gallery({ id: galleryId })
   .fetch({ withRelated: 'photos' })
-  .then((gallery) => res.render('share-app', { data: { gallery } }))
+  .then((gallery) => res.render('share-app', { data: gallery }))
   .catch((err) => res.status(403).json({ message: err }))
 }
 

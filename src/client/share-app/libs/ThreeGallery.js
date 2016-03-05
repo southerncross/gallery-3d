@@ -118,11 +118,12 @@ class ThreeGallery {
   }
 
   __render() {
-    const { stats, renderer, scene, camera, keepRendering } = this.three
+    const { stats, renderer, scene, camera, moveControl, keepRendering } = this.three
     if (stats) {
       stats.update()
     }
     renderer.render(scene, camera)
+    moveControl.move()
     if (keepRendering) {
       requestAnimationFrame(this.__render)
     }

@@ -3,11 +3,31 @@ import Stats from 'Stats'
 
 import MoveControl from './MoveControl'
 
-function createMeshFromPhoto(photo) {
-  const geometry = new THREE.BoxGeometry(20, 20, 20)
-  const material = new THREE.MeshLambertMaterial({ color: '#ffffff', emissive: '#a4a4a4' })
-  const cube = new THREE.Mesh(geometry, material)
-  return cube
+function createMeshGroupFromPhoto(photo) {
+  const group = new THREE.Object3D()
+
+  const borderLoader = new THREE.TextureLoader()
+  borderLoader.load('/images/wood.jpg', (texture) => {
+    const border = new THREE.Mesh(
+      new THREE.BoxGeometry(10, 10, 0.3),
+      new THREE.MeshBasicMaterial({ map: texture })
+    )
+    border.position.set(0, 10, 10)
+    group.add(border)
+  })
+
+  const paintLoader = new THREE.TextureLoader()
+  paintLoader.crossOrigin = ''
+  paintLoader.load(photo.url, (texture) => {
+    const paint = new THREE.Mesh(
+      new THREE.PlaneGeometry(9, 9),
+      new THREE.MeshBasicMaterial({ map: texture })
+    )
+    paint.position.set(0, 10, 10.2)
+    group.add(paint)
+  })
+
+  return group
 }
 
 class ThreeGallery {
@@ -26,7 +46,7 @@ class ThreeGallery {
     this.__initMoveControl = this.__initMoveControl.bind(this)
     this.__initLight = this.__initLight.bind(this)
     this.__initAxes = this.__initAxes.bind(this)
-    this.__initPhotos = this.__initPhotos.bind(this)
+    this.__initMesh = this.__initMesh.bind(this)
     this.__render = this.__render.bind(this)
     this.init = this.init.bind(this)
     this.destroy = this.destroy.bind(this)
@@ -96,10 +116,19 @@ class ThreeGallery {
     this.three.scene.add(axes)
   }
 
-  __initPhotos() {
+  __initMesh() {
+    const plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(200, 200),
+      new THREE.MeshBasicMaterial({ color: 0xcccccc })
+    )
+    plane.receiveShadow = false
+    plane.rotation.x = -0.5 * Math.PI
+    this.three.scene.add(plane)
+
+    const interval = 10
     this.photos.forEach((photo, idx) => {
-      const mesh = createMeshFromPhoto(photo)
-      mesh.position.set(0, 10 * idx, 0)
+      const mesh = createMeshGroupFromPhoto(photo)
+      mesh.translateZ(interval * idx)
       this.three.scene.add(mesh)
     })
   }
@@ -110,7 +139,7 @@ class ThreeGallery {
     this.__initMoveControl()
     this.__initLight()
     this.__initAxes()
-    this.__initPhotos()
+    this.__initMesh()
   }
 
   destroy() {
@@ -143,7 +172,7 @@ class ThreeGallery {
   addPhotos(photos) {
     photos.forEach((photo, idx) => {
       this.photos.push(photo)
-      const mesh = createMeshFromPhoto(photo)
+      const mesh = createMeshGroupFromPhoto(photo)
       mesh.position.set(0, 10 * (this.photos.length + idx), 0)
       this.three.scene.add(mesh)
     })

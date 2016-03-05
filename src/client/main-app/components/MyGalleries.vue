@@ -4,7 +4,7 @@
     <div v-for="gallery in galleries">
       <span>{{gallery.name}}</span>
       <span>包含{{gallery.photos.length}}张照片</span>
-      <div v-if="gallery.accessToken">
+      <div v-if="gallery.shareUrl">
         分享链接 <span>{{ gallery.shareUrl }}</span>
       </div>
       <div v-else>
@@ -57,7 +57,7 @@ export default {
         return
       }
       that.galleries = res.body.map((gallery) => {
-        if (gallery.accessToken) {
+        if (gallery.accessToken.token) {
           gallery.shareUrl = `${window.location.origin}/share?access_token=${gallery.accessToken.token}`
         }
         return gallery

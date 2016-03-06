@@ -1,4 +1,5 @@
 import THREE from 'three'
+import '../../vendors/PointerLockControls'
 
 class MoveControl {
   constructor({ camera }) {

@@ -1,5 +1,5 @@
 import THREE from 'three'
-import Stats from 'Stats'
+import Stats from 'stats.js'
 
 import MoveControl from './MoveControl'
 

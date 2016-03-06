@@ -63,7 +63,6 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ],
   externals: {
-    Qiniu: 'Qiniu',
     plupload: 'plupload'
   }
 }

@@ -42,6 +42,7 @@
     "passport-local": "^1.0.0",
     "pg": "^4.5.1",
     "qiniu": "^6.1.9",
+    "qiniu-js": "^1.0.14-beta",
     "serve-favicon": "^2.3.0",
     "stats.js": "0.0.14-master",
     "stylus-loader": "^1.5.1",

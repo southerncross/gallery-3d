@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.dev.js"
+    "dev": "cross-env NODE_ENV=development && nodemon index.dev.js"
   },
   "author": "Shunyang Li",
   "license": "MIT",
@@ -21,6 +21,7 @@
     "bunyan": "^1.7.1",
     "connect-session-knex": "^1.0.22",
     "cookie-parser": "^1.4.1",
+    "cross-env": "^1.0.7",
     "css-loader": "^0.23.1",
     "del": "^2.2.0",
     "eslint": "^2.2.0",

@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Qiniu from 'qiniu-js/dist/qiniu.min'
+import Qiniu from 'Qiniu'
 import plupload from 'plupload'
 import request from 'superagent'
 

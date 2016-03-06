@@ -4,7 +4,7 @@
     <div v-for="photo in photos" class="my-photos__item">
       <img class="my-photos__item__img" :src="photo.url"/>
       <span>{{photo.name}}</span>
-    </div>div>
+    </div>
   </div>
   <div v-else>
     还没有任何照片

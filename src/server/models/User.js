@@ -7,6 +7,8 @@ import Photo from './Photo'
 export default Base.extend({
   tableName: 'users',
 
+  salt: '$2a$10$BX4hC9DQ31SJTPWL1IN4MO',
+
   galleries() {
     return this.hasMany(Gallery)
   },
@@ -31,8 +33,6 @@ export default Base.extend({
     }
   }
 }, {
-  salt: '$2a$10$BX4hC9DQ31SJTPWL1IN4MO',
-
   validPassword: (email, password) => {
     if (!email || password) {
       return Promise.reject('Email and password are both required')

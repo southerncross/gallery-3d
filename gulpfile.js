@@ -48,16 +48,21 @@ gulp.task('build:server', function() {
   .pipe(gulp.dest(PATH.DIST))
 })
 
-gulp.task('build:copy-others', function() {
-  return gulp.src(path.join(PATH.SRC, './package.json'))
+gulp.task('build:copy-package', function() {
+  return gulp.src(path.join(__dirname, './package.json'))
   .pipe(gulp.dest(PATH.DIST))
+})
+
+gulp.task('build:copy-views', function() {
+  return gulp.src(path.join(PATH.SRC, './server/views/**/*'))
+  .pipe(gulp.dest(path.join(PATH.DIST, './views')))
 })
 
 gulp.task('build', function(callback) {
   runSequence(
     'build:clean',
     ['build:client', 'build:server'],
-    'build:copy-others',
+    ['build:copy-package', 'build:copy-views'],
     callback
   )
 })

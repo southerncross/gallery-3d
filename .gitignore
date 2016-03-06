@@ -1,2 +1,7 @@
-node_modules
+node_modules/
 npm-debug.log
+dist/
+src/server/public/javascripts/main-app.js
+src/server/public/javascripts/share-app.js
+src/server/public/stylesheets/main-app.css
+src/server/public/stylesheets/share-app.css

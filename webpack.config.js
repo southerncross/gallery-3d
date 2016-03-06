@@ -66,6 +66,6 @@ module.exports = {
     Qiniu: 'Qiniu',
     plupload: 'plupload',
     three: 'THREE',
-    Stats: 'Stats',
+    Stats: 'Stats'
   }
 }

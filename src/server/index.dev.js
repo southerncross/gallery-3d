@@ -7,11 +7,15 @@ import favicon from 'serve-favicon'
 import logger from 'morgan'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
+import webpack from 'webpack'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
 
 import './passport'
 import bookshelf from './bookshelf'
 import log from './log'
 import router from './router'
+import config from '../../webpack.dev.config'
 
 const app = express()
 const SessionStore = SessionStoreCreator(session)
@@ -38,6 +42,15 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
+
+const compiler = webpack(config)
+
+app.use(webpackDevMiddleware(compiler, {
+  publicPath: config.output.publicPath,
+  stats: { colors: true }
+}))
+
+app.use(webpackHotMiddleware(compiler))
 
 app.use('/', router)
 

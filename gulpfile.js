@@ -34,8 +34,10 @@ gulp.task('build:client:del', function() {
   return del([
     path.join(PATH.SRC, './server/public/javascripts/main-app.js'),
     path.join(PATH.SRC, './server/public/javascripts/share-app.js'),
+    path.join(PATH.SRC, './server/public/javascripts/login-app.js'),
     path.join(PATH.SRC, './server/public/stylesheets/main-app.css'),
-    path.join(PATH.SRC, './server/public/stylesheets/share-app.css')
+    path.join(PATH.SRC, './server/public/stylesheets/share-app.css'),
+    path.join(PATH.SRC, './server/public/stylesheets/login-app.css')
   ])
 })
 

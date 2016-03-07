@@ -35,10 +35,13 @@ passport.use(new LocalStrategy({
     if (!user) {
       return done(null, false, { message: 'Incorrect username.' })
     }
-    if (!User.validPassword(email, password)) {
+    User.validPassword(email, password)
+    .then(() => {
+      return done(null, user.serialize())
+    })
+    .catch(() => {
       return done(null, false, { message: 'Incorrect password.' })
-    }
-    return done(null, user.serialize())
+    })
   })
   .catch(done)
 }))

@@ -1,40 +1,43 @@
 <template>
-  <div class="app full-height">
-    <form action="/logout" method="post">
-      <button type="submit">注销</button>
-    </form>
-    <a v-link="{ name: 'my-galleries' }">我的画室</a>
-    <a v-link="{ name: 'create-gallery' }">新建画室</a>
-    <a v-link="{ name: 'my-photos' }">我的照片</a>
-    <a v-link="{ name: 'upload-photos' }">上传照片</a>
-    <router-view></router-view>
+  <div>
+    <nav-column class="app__nav-column" :user="user"></nav-column>
+    <router-view class="app__main-view"></router-view>
   </div>
 </template>
 
 <script>
+import NavColumn from './layout/NavColumn'
+
+export default {
+  name: 'App',
+
+  components: {
+    NavColumn
+  },
+
+  data() {
+    return {
+      user: {}
+    }
+  },
+
+  ready() {
+    this.user = window['gallery-3d'].data
+  }
+}
 </script>
 
-<style>
-html {
-  height: 100%;
-}
+<style lang="stylus">
+nav-column-width = 200px
 
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-#container {
-  margin-top: -100px;
-  max-width: 600px;
-  font-family: Helvetica, sans-serif;
-  text-align: center;
-}
-
-.logo {
-  width: 100px;
-  height: 100px
-}
+.app
+  &__nav-column
+    position fixed
+    left 0
+    top 0
+    z-index 50
+    width nav-column-width
+    height 100%
+  &__main-view
+    margin-left nav-column-width
 </style>

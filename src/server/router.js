@@ -4,6 +4,7 @@ import passport from 'passport'
 import uploader from './controllers/uploader'
 import photos from './controllers/photos'
 import galleries from './controllers/galleries'
+import sessions from './controllers/sessions'
 
 const router = express.Router()
 
@@ -11,9 +12,9 @@ const router = express.Router()
 router.get('/', (req, res) => {
   if (req.user) {
     res.cookie('user_email', req.user.email)
-    res.render('main-app')
+    res.render('main-app', { data: req.user })
   } else {
-    res.redirect('/login')
+    res.render('login-app')
   }
 })
 
@@ -21,17 +22,9 @@ router.get('/share', passport.authenticate('bearer', {
   session: false
 }), galleries.renderSharePage)
 
-router.get('/login', (req, res) => res.render('login'))
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: true
-}))
-router.post('/logout', (req, res) => {
-  req.logout()
-  res.clearCookie('user_email')
-  res.redirect('/login')
-})
+router.get('/login', (req, res) => res.render('login-app'))
+router.post('/login', sessions.login)
+router.post('/logout', sessions.logout)
 
 router.get('/api/uptoken', uploader.getUptokenAPI)
 

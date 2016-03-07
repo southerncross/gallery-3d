@@ -1,7 +1,7 @@
 extends layout
 
 block append head
-  link(rel='stylesheet', href='/stylesheets/main-app.css', type='text/css')
+  link(rel='stylesheet', href='/stylesheets/login.css', type='text/css')
   link(rel='stylesheet', href='/stylesheets/materialize.min.css', type='text/css')
   link(rel='stylesheet', href='/stylesheets/icon.css', type='text/css')
   title Gallery-3d
@@ -9,13 +9,11 @@ block append head
 block content
   div#app
 
-  input#init-data(type='hidden' value=JSON.stringify(data))
+  input#init-data(type='hidden' value=JSON.stringify(message))
   script.
     window['gallery-3d'] = window['gallery-3d'] || {}
     window['gallery-3d'].data = JSON.parse(document.getElementById('init-data').value)
 
   script(src='/javascripts/jquery.min.js')
   script(src='/javascripts/materialize.min.js')
-  script(src='/javascripts/plupload.full.min.js')
-  script(src='/javascripts/qiniu.min.js')
-  script(src='/javascripts/main-app.js')
+  script(src='/javascripts/login-app.js')

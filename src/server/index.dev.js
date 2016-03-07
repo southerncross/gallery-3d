@@ -16,6 +16,7 @@ import bookshelf from './bookshelf'
 import log from './log'
 import router from './router'
 import config from '../../webpack.dev.config'
+import configs from './configs'
 
 const app = express()
 const SessionStore = SessionStoreCreator(session)
@@ -74,6 +75,6 @@ app.use(function(err, req, res, next) {
   })
 })
 
-app.listen(4000)
+app.listen(configs.port)
 
 export default app

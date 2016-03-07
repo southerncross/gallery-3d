@@ -2,14 +2,15 @@ import knex from 'knex'
 import bookshelf from 'bookshelf'
 
 import log from './log'
+import configs from './configs'
 
 const db = knex({
   client: 'pg',
   connection: {
-    host: '127.0.0.1',
-    user: 'lishunyang',
-    password: '',
-    database: 'gallery-dev',
+    host: configs.psql.host,
+    user: configs.psql.user,
+    password: configs.psql.password,
+    database: configs.psql.db,
     charset: 'utf8'
   },
   debug: false // <---- knex debug log

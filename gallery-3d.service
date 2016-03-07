@@ -1,0 +1,16 @@
+[Unit]
+Description=Gallery-3d App Service
+
+[Service]
+PIDFile=/opt/pids/gallery-3d.pid
+EnvironmentFile=/opt/node-env
+ExecStart=/usr/bin/node /opt/app/index.js
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=gallery-3d
+User=lishunyang
+Group=wheel
+
+[Install]
+WantedBy=multi-user.target

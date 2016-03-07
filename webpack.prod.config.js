@@ -84,6 +84,7 @@ module.exports = {
     new webpack.optimize.OccurenceOrderPlugin()
   ],
   externals: {
+    THREE: 'THREE',
     plupload: 'plupload',
     Qiniu: 'Qiniu'
   }

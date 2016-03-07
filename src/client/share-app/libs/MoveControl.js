@@ -1,4 +1,4 @@
-import THREE from 'three'
+import THREE from 'THREE'
 import '../../vendors/PointerLockControls'
 
 class MoveControl {

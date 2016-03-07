@@ -4,7 +4,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-import THREE from 'three'
+import THREE from 'THREE'
 
 THREE.PointerLockControls = function ( camera ) {
 

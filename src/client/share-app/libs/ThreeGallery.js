@@ -1,4 +1,4 @@
-import THREE from 'three'
+import THREE from 'THREE'
 import Stats from 'stats.js'
 
 import MoveControl from './MoveControl'

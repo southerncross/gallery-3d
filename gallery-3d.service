@@ -3,7 +3,7 @@ Description=Gallery-3d App Service
 
 [Service]
 PIDFile=/opt/pids/gallery-3d.pid
-EnvironmentFile=/opt/node-env
+Environment=NODE_ENV=production PORT=4000
 ExecStart=/usr/bin/node /opt/app/index.js
 Restart=always
 StandardOutput=syslog

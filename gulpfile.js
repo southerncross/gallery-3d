@@ -30,10 +30,18 @@ gulp.task('build:client:copy', function() {
   .pipe(gulp.dest(path.join(PATH.DIST, './public')))
 })
 
+gulp.task('build:client:del', function() {
+  return del([
+    path.join(PATH.SRC, './server/public/javascripts/main-app.js'),
+    path.join(PATH.SRC, './server/public/javascripts/share-app.js')
+  ])
+})
+
 gulp.task('build:client', function(callback) {
   runSequence(
     'build:client:compile',
     'build:client:copy',
+    'build:client:del',
     callback
   )
 })

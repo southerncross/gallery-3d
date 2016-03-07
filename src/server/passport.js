@@ -33,14 +33,14 @@ passport.use(new LocalStrategy({
   .fetch()
   .then((user) => {
     if (!user) {
-      return done(null, false, { message: 'Incorrect username.' })
+      return done(null, false, { message: '用户不存在' })
     }
     User.validPassword(email, password)
     .then(() => {
       return done(null, user.serialize())
     })
     .catch(() => {
-      return done(null, false, { message: 'Incorrect password.' })
+      return done(null, false, { message: '密码错误' })
     })
   })
   .catch(done)

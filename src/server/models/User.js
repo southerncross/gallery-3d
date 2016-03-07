@@ -33,14 +33,16 @@ export default Base.extend({
     }
   }
 }, {
-  validPassword: (email, password) => {
-    if (!email || password) {
+  validPassword: function(email, password) {
+    if (!email || !password) {
       return Promise.reject('Email and password are both required')
     }
     return new this({ email: email.toLowerCase().trim() })
     .fetch({ require: true })
     .then((user) => {
-      if (!bcrypt.compareSync(bcrypt.hashSync(password, this.salt), user.get('hashed_password'))) {
+      // TODO boring: refactor salt and replace bcrypt
+      const salt = '$2a$10$BX4hC9DQ31SJTPWL1IN4MO'
+      if (bcrypt.hashSync(password, salt) !== user.get('hashedPassword')) {
         throw new Error('Invalid password')
       }
     })

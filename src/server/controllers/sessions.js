@@ -2,7 +2,7 @@ import passport from 'passport'
 
 import log from '../log'
 
-const login = (req, res, next) => {
+function login(req, res, next) {
   passport.authenticate('local', {
     badRequestMessage: '请填写邮箱/密码'
   }, (err, user, info) => {
@@ -11,7 +11,7 @@ const login = (req, res, next) => {
       return next(err)
     }
     if (!user || user.deactivated) {
-      return res.render('login-app', info)
+      return res.status(403).json(info)
     }
     req.login(user, (error) => {
       if (error) {
@@ -22,7 +22,7 @@ const login = (req, res, next) => {
   })(req, res, next)
 }
 
-const logout = (req, res) => {
+function logout(req, res) {
   req.logout()
   res.clearCookie('user_email')
   res.redirect('/login')

@@ -9,11 +9,6 @@ block append head
 block content
   div#app
 
-  input#init-data(type='hidden' value=JSON.stringify(message))
-  script.
-    window['gallery-3d'] = window['gallery-3d'] || {}
-    window['gallery-3d'].data = JSON.parse(document.getElementById('init-data').value)
-
   script(src='/javascripts/jquery.min.js')
   script(src='/javascripts/materialize.min.js')
   script(src='/javascripts/login-app.js')

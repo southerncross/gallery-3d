@@ -1,8 +1,12 @@
 <template>
-<div>
+<div class="my-photos__container container">
   <div v-if="photos.length > 0">
+    <div class="my-photos__info">
+      共{{photos.length}}张照片
+    </div>
+    <div class="divider"></div>
     <div v-for="photo in photos" class="my-photos__item">
-      <img class="my-photos__item__img" :src="photo.url"/>
+      <img class="my-photos__item__img card" :src="photo.url"/>
       <span>{{photo.name}}</span>
     </div>
   </div>
@@ -40,11 +44,18 @@ export default {
 </script>
 
 <style lang="stylus">
-.my-photos__item
-  display inline-block
-  width 120px
-  margin 10px
-  &__img
-    display block
-    width 100%
+.my-photos
+  &__container
+    margin-top 10%
+  &__info
+    font-size 23px
+    color color-grey-darken-1
+  &__item
+    display inline-block
+    width 120px
+    margin 10px
+    &__img
+      display block
+      width 100%
+      padding 2px
 </style>

@@ -1,16 +1,25 @@
 <template>
-  <div>
-    <div id="demo__upload__dropzone">
-      <label for="demo__upload__button">上传图片</label>
-      <input id="demo__upload__button" type="file">
-    </div>
-    <div>
-      <div v-for="photo in photos">
-        <span>{{photo.name}}</span>
-        <span>{{photo.size / 1000}} Kb</span>
-        <span>{{photo.percent}}</span>
-        <span>{{photo.test}}</span>
-        <img v-if="photo.sourceLink" :src="photo.sourceLink"/>
+  <div class="upload-photos__container container">
+    <div class="upload-photos__dropzone" id="upload-photos__dropzone">
+      <input class="upload-photos__dropzone__button" id="upload-photos__button" type="file">
+      <label v-show="photos.length === 0" class="upload-photos__dropzone__label" for="upload-photos__button">
+        点击上传图片，支持拖拽
+      </label>
+      <div v-show="photos.length > 0">
+        <div class="upload-photos__photo" v-for="photo in photos">
+          <div class="upload-photos__photo__img card">
+            <img v-if="photoIdToUrl[photo.id]" :src="photoIdToUrl[photo.id]"/>
+            <div v-else class="upload-photos__photo__fake">
+              <div class="upload-photos__photo__progress progress">
+                <div class="determinate" :style="{ width: photo.percent + '%' }"></div>
+              </div>
+            </div>
+          </div>
+          <div class="upload-photos__photo__info">
+            <div class="upload-photos__photo__name">{{photo.name}}</div>
+            <div class="upload-photos__photo__size">{{photo.size / 1000}}Kb</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -26,7 +35,8 @@ export default {
 
   data() {
     return {
-      photos: []
+      photos: [],
+      photoIdToUrl: {}
     }
   },
 
@@ -54,7 +64,7 @@ export default {
     const that = this
     Qiniu.uploader({
       runtimes: 'html5,flash,html4', // 上传模式,依次退化
-      browse_button: 'demo__upload__button', // 上传选择的点选按钮，**必需**
+      browse_button: 'upload-photos__button', // 上传选择的点选按钮，**必需**
       uptoken_url: '/api/uptoken', // Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
       // downtoken_url: '/downtoken',
       // Ajax请求downToken的Url，私有空间时使用,JS-SDK将向该地址POST文件的key和domain,服务端返回的JSON必须包含`url`字段，`url`值为该文件的下载地址
@@ -63,12 +73,12 @@ export default {
       // save_key: true, // 默认 false。若在服务端生成uptoken的上传策略中指定了 `sava_key`，则开启，SDK在前端将不对key进行任何处理
       domain: 'http://7xprgf.com1.z0.glb.clouddn.com/', // bucket 域名，下载资源时用到，**必需**
       get_new_uptoken: false, // 设置上传文件的时候是否每次都重新获取新的token
-      container: 'demo__upload__dropzone', // 上传区域DOM ID，默认是browser_button的父元素，
+      container: 'upload-photos__dropzone', // 上传区域DOM ID，默认是browser_button的父元素，
       max_file_size: '100mb', // 最大文件体积限制
       flash_swf_url: 'js/plupload/Moxie.swf', // 引入flash,相对路径
       max_retries: 3, // 上传失败最大重试次数
       dragdrop: true, // 开启可拖曳上传
-      drop_element: 'demo__upload__dropzone', // 拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+      drop_element: 'upload-photos__dropzone', // 拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
       chunk_size: '4mb', // 分块上传时，每片的体积
       auto_start: true, // 选择文件后自动上传，若关闭需要自己绑定事件触发上传,
       init: {
@@ -88,15 +98,16 @@ export default {
 
           const domain = up.getOption('domain')
           const res = JSON.parse(info)
-          const sourceLink = domain + res.key // 获取上传成功后的文件的Url
-          file.sourceLink = sourceLink
-          that.savePhotoLink(file, sourceLink)
+          const url = domain + res.key // 获取上传成功后的文件的Url
+          that.photoIdToUrl = Object.assign({}, JSON.parse(JSON.stringify(that.photoIdToUrl)), { [file.id]: url })
+          that.savePhotoLink(file, url)
         },
         Error: function(up, err, errTip) {
-          console.error('upload error')
+          // TODO: boring, finish error handler
+          console.error('upload error', err)
         },
         UploadComplete: function() {
-          // 队列文件处理完毕后,处理相关的事情
+          console.log('upload complete')
         }
       }
     })
@@ -105,8 +116,52 @@ export default {
 </script>
 
 <style lang="stylus">
-#demo__upload__dropzone
-  width 100%
-  height 200px
-  border 1px solid gray
+@import '../../palette'
+
+.upload-photos
+  &__container
+    margin-top 10%
+  &__dropzone
+    min-height 200px
+    text-align center
+    color color-grey-lighten-2
+    border 4px dashed color-grey-lighten-2
+    &__button
+      display none
+    &__label
+      font-size 30px
+      line-height 200px
+      cursor pointer
+      &:hover
+        color color-grey-lighten-1
+  &__photo
+    position relative
+    display inline-block
+    margin 8px
+    color color-grey-darken-2
+    &__img
+      padding 2px
+      margin-bottom 40px
+      & img
+        max-height 280px
+        max-width 200px
+    &__fake
+      width 100px
+      height 140px
+    &__progress
+      margin-top 80%
+    &__info
+      position absolute
+      bottom -10px
+      width 100%
+    &__name
+      width 100%
+      white-space nowrap
+      text-overflow ellipsis
+      overflow hidden
+    &__size
+      max-width 100px
+      white-space nowrap
+      text-overflow ellipsis
+      overflow hidden
 </style>

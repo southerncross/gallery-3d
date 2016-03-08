@@ -6,7 +6,7 @@
     </div>
     <div class="divider"></div>
     <div class="my-gallery__gallery-item card col s6 m4 l3" v-for="gallery in galleries">
-      <gallery-thumbnail :gallery="gallery" :onShareGallery="share"></gallery-thumbnail>
+      <gallery-thumbnail :gallery="gallery" :on-share-gallery="share"></gallery-thumbnail>
     </div>
   </div>
   <div class="my-gallery__hint" v-else>

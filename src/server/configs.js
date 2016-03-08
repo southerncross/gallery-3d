@@ -20,7 +20,7 @@ if (env === 'development') {
     qiniu: {
       accessKey: 'S8nv08l-SfPpmxm_ZBtss2oAcI9gYovLghE45fQK',
       secretKey: 'LFxD04qdQ1ZQ_b6zcDrQPG0bTGTzWUmLHwN69hAy',
-      bucket: 'gallery-dev'
+      bucket: 'gallery-3d'
     }
   }
 } else if (env === 'production') {

@@ -44,6 +44,8 @@ export default {
 </script>
 
 <style lang="stylus">
+@import '../../palette'
+
 .my-photos
   &__container
     margin-top 10%

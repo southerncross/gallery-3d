@@ -4,7 +4,7 @@
     <div class="section">
       <div class="create-gallery__step__title"><i class="icon-looks_one"></i>起个好名儿</div>
       <div class="input-field">
-        <input id="create-gallery__name" type="text" v-model="galleryName" @input="onClearNameError"/>
+        <input id="create-gallery__name" type="text" v-model="galleryName" @input="nameError = ''"/>
         <label for="create-gallery__name">名字</label>
       </div>
       <div class="create-gallery__error">{{nameError}}</div>
@@ -14,7 +14,7 @@
       <div class="create-gallery__photo" v-for="photo in photos">
         <img class="create-gallery__photo__img card" :src="photo.url"/>
         <input id="{{'create-gallery__photo--' + photo.id}}" type="checkbox" value="{{photo.id}}" v-model="selectedPhotoIds"/>
-        <label for="{{'create-gallery__photo--' + photo.id}}" @click="onClearPhotoError"></label>
+        <label for="{{'create-gallery__photo--' + photo.id}}" @click="photoError = ''"></label>
       </div>
       <div class="create-gallery__error">{{photoError}}</div>
     </div>
@@ -41,7 +41,7 @@ export default {
       photos: [],
       selectedPhotoIds: [],
       nameError: '',
-      photoError: '',
+      photoError: ''
     }
   },
 

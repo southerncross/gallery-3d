@@ -1,7 +1,9 @@
 <template>
   <div>
     <nav-column class="app__nav-column" :user="user"></nav-column>
-    <router-view class="app__main-view"></router-view>
+    <div class="app__main-view">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 

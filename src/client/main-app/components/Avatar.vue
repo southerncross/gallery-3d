@@ -19,6 +19,8 @@ export default {
 </script>
 
 <style lang="stylus">
+@import '../../palette'
+
 avatar-size = 50px
 
 .avatar
@@ -27,6 +29,7 @@ avatar-size = 50px
   height avatar-size
   font-size 22px
   line-height avatar-size
+  color color-grey-darken-1
   border-radius 50%
   background-color white
   cursor pointer

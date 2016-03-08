@@ -4,12 +4,10 @@ import log from '../log'
 const knex = bookshelf.knex
 const tables = ['users', 'galleries', 'photos', 'galleries_photos']
 
-knex.schema
-.raw('SET foreign_key_checks = 0')
-.then(() => tables.reduce((promise, table) => {
+tables.reduce((promise, table) => {
   log.info(`Dropping '${table}' ...`)
-  return promise.then(() => knex.schema.dropTableIfExists(table))
-}, Promise.resolve()))
+  return promise.then(() => knex.raw(`DROP TABLE ${table} CASCADE`))
+}, Promise.resolve())
 .then(() => {
   log.info('All tables dropped successfully!')
   knex.destroy()

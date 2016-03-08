@@ -28,7 +28,7 @@
       <span>{{errorMessage}}</span>
     </div>
     <div class="login__submit">
-      <button class="btn" @click="login">登陆</button>
+      <button class="btn cyan" @click="login">登陆</button>
     </div>
  </div>
 </template>

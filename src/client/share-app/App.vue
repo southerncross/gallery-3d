@@ -1,8 +1,9 @@
 <template>
   <div class="app full-height">
-    <div v-if="!isPointerLocked" id="instructions">
-      按Esc退出
-      <button @click="start">开始</button>
+    <div class="app__hint" v-if="!isPointerLocked">
+      <div class="app__hint__item">按Esc退出</div>
+      <div class="app__hint__item">按方向键控制行动</div>
+      <button class="app__hint__start" @click="start">开始</button>
     </div>
     <gallery :gallery-info="galleryInfo" :keep-rendering="isPointerLocked"></gallery>
   </div>
@@ -74,6 +75,8 @@ export default {
 </script>
 
 <style lang="stylus">
+@import '../palette'
+
 html
   height 100%
 
@@ -83,12 +86,27 @@ body
   justify-content center
   height 100%
 
-#instructions
+.app__hint
   position absolute
   left 50%
   top 50%
-  width 200px
-  height 200px
-  background-color green
+  padding 20px
+  text-align center
   transform translate(-50%, -50%)
+  background-color rgba(white, 70%)
+  &__item
+    font-size 23px
+    margin 30px
+  &__start
+    font-size 23px
+    margin 30px
+    padding 10px 30px
+    cursor pointer
+    color white
+    border none
+    border-radius 30px
+    background-color color-cyan
+    box-shadow 3px 3px 3px color-grey
+    &:hover
+      background-color color-cyan-lighten-1
 </style>

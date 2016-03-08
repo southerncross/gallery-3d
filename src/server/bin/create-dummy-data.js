@@ -12,9 +12,9 @@ const users = [
     phone: '15600608485'
   }), new User({
     name: '测试账户',
-    email: '414892763@qq.com',
+    email: 'hello@pku.edu.cn',
     password: '1234',
-    phone: '15210624814'
+    phone: '13579202680'
   })
 ]
 

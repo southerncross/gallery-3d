@@ -10,7 +10,7 @@
       <span>{{photo.name}}</span>
     </div>
   </div>
-  <div v-else>
+  <div class="my-photos__hint" v-else>
     还没有任何照片
     <a v-link="{ name: 'upload-photos' }">现在去上传</a>
   </div>
@@ -60,4 +60,7 @@ export default {
       display block
       width 100%
       padding 2px
+  &__hint
+    font-size 23px
+    color color-grey-darken-2
 </style>

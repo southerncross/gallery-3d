@@ -1,13 +1,16 @@
-import bcrypt from 'bcrypt'
+import crypto from 'crypto'
 
 import Base from './Base'
 import Gallery from './Gallery'
 import Photo from './Photo'
 
+function __encryptPassword(password) {
+  const salt = new Buffer('$2a$10$BX4hC9DQ31SJTPWL1IN4MO', 'base64')
+  return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64')
+}
+
 export default Base.extend({
   tableName: 'users',
-
-  salt: '$2a$10$BX4hC9DQ31SJTPWL1IN4MO',
 
   galleries() {
     return this.hasMany(Gallery)
@@ -21,29 +24,26 @@ export default Base.extend({
     this.on('creating', this.hashPassword, this)
   },
 
-  // Can not user arrow function
-  hashPassword: function(model, attrs, options) {
+  hashPassword(model, attrs, options) {
     const password = model.get('password')
     if (password) {
-      model.set('hashed_password', bcrypt.hashSync(password, this.salt))
+      model.set('hashed_password', __encryptPassword(password))
       model.unset('password')
       return Promise.resolve(model)
     } else {
-      return Promise.reject('Password is required')
+      return Promise.reject('缺少密码')
     }
   }
 }, {
-  validPassword: function(email, password) {
+  validPassword(email, password) {
     if (!email || !password) {
-      return Promise.reject('Email and password are both required')
+      return Promise.reject('缺少邮箱或密码')
     }
     return new this({ email: email.toLowerCase().trim() })
     .fetch({ require: true })
     .then((user) => {
-      // TODO boring: refactor salt and replace bcrypt
-      const salt = '$2a$10$BX4hC9DQ31SJTPWL1IN4MO'
-      if (bcrypt.hashSync(password, salt) !== user.get('hashedPassword')) {
-        throw new Error('Invalid password')
+      if (__encryptPassword(password) !== user.get('hashedPassword')) {
+        throw new Error('密码错误')
       }
     })
   }

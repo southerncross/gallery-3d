@@ -7,7 +7,7 @@
     <div class="divider"></div>
     <div v-for="photo in photos" class="my-photos__item">
       <img class="my-photos__item__img card" :src="photo.url"/>
-      <span>{{photo.name}}</span>
+      <div class="my-photos__item__name">{{photo.name}}</div>
     </div>
   </div>
   <div class="my-photos__hint" v-else>
@@ -60,6 +60,11 @@ export default {
       display block
       width 100%
       padding 2px
+    &__name
+      width 100%
+      white-space nowrap
+      text-overflow ellipsis
+      overflow hidden
   &__hint
     font-size 23px
     color color-grey-darken-2

@@ -25,14 +25,44 @@ function shareGalleryAPI(req, res) {
   const galleryId = req.params.galleryId
 
   new Gallery({ id: galleryId, user_id: userId })
-  .fetch()
+  .fetch({ withRelated: 'accessToken' })
+  .then((gallery) => {
+    if (!gallery) {
+      throw new Error('找不到该画室')
+    }
+    if (!gallery.related('accessToken').get('token')) {
+      return new AccessToken({ gallery_id: galleryId, valid: true })
+      .save()
+    } else {
+      return new AccessToken({
+        token: gallery.related('accessToken').get('token'),
+        gallery_id: galleryId,
+        valid: true
+      })
+      .save()
+    }
+  })
+  .then((accessToken) => res.status(200).json(accessToken.toJSON()))
+  .catch((err) => res.status(400).json({ message: err.message }))
+}
+
+function deshareGalleryAPI(req, res) {
+  const userId = req.user.id
+  const galleryId = req.params.galleryId
+
+  new Gallery({ id: galleryId, user_id: userId })
+  .fetch({ withRelated: 'accessToken' })
   .then((gallery) => {
     if (!gallery) {
       return res.status(400).json({ message: '找不到该画室' })
     }
-  })
-  .then(() => {
-    new AccessToken({ gallery_id: galleryId })
+    if (!gallery.related('accessToken').get('token')) {
+      return res.status(403).json({ message: '该画室没有被分享' })
+    }
+    return new AccessToken({
+      token: gallery.related('accessToken').get('token'),
+      gallery_id: galleryId, valid: false
+    })
     .save()
     .then((accessToken) => res.status(200).json(accessToken.toJSON()))
   })
@@ -52,5 +82,6 @@ export default {
   saveGalleryAPI,
   getGalleriesAPI,
   shareGalleryAPI,
+  deshareGalleryAPI,
   renderSharePage
 }

@@ -35,5 +35,6 @@ router.post('/api/galleries', galleries.saveGalleryAPI)
 router.get('/api/galleries', galleries.getGalleriesAPI)
 
 router.put('/api/share-gallery/:galleryId', galleries.shareGalleryAPI)
+router.put('/api/deshare-gallery/:galleryId', galleries.deshareGalleryAPI)
 
 export default router

@@ -28,11 +28,11 @@
           新建画室
         </div>
         <div class="nav-column__link waves-effect" v-link="{ name: 'my-photos' }">
-          <span class="icon-settings"></span>
+          <span class="icon-photo_library"></span>
           我的照片
         </div>
         <div class="nav-column__link waves-effect" v-link="{ name: 'upload-photos' }">
-          <span class="icon-adb"></span>
+          <span class="icon-file_upload"></span>
           上传照片
         </div>
       </div>

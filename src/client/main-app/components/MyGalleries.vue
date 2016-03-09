@@ -34,23 +34,6 @@ export default {
     }
   },
 
-  methods: {
-    share(gallery) {
-      const that = this
-      request.put(`/api/share-gallery/${gallery.id}`)
-      .end((err, res) => {
-        if (err || !res.ok) {
-          console.error(err)
-          return
-        }
-        const idx = that.galleries.indexOf(gallery)
-        if (idx >= 0) {
-          that.galleries[idx] = res.body
-        }
-      })
-    }
-  },
-
   ready() {
     const that = this
     request.get('/api/galleries')

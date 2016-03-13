@@ -29,5 +29,8 @@ html, body
     width 100%
     height 100%
   &__center
-    margin 20% auto 0 auto
+    position absolute
+    left 50%
+    top 50%
+    transform translate(-50%, -50%)
 </style>

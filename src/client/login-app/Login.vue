@@ -82,15 +82,25 @@ export default {
     width 480px
     height 400px
     padding 30px
+    @media screen and (max-width: 600px)
+      width 80%
+      height initial
+      padding 20px
   &__logo
     & img
       width 120px
       height 120px
       vertical-align top
+      @media screen and (max-width: 600px)
+        width 100px
+        height 100px
+        padding 10px
     & span
       padding-left 30px
       font-size 24px
       line-height 120px
+      @media screen and (max-width: 600px)
+        padding 0
   &__error
     height 40px
     color red

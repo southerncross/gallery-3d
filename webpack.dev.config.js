@@ -66,6 +66,7 @@ module.exports = {
   externals: {
     THREE: 'THREE',
     plupload: 'plupload',
-    Qiniu: 'Qiniu'
+    Qiniu: 'Qiniu',
+    Snap: 'Snap'
   }
 }

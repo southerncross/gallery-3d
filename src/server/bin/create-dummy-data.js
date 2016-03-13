@@ -8,8 +8,8 @@ const users = [
   new User({
     name: '李舜阳',
     email: 'lishunyang@pku.edu.cn',
-    password: 'Boring09',
-    phone: '15600608485'
+    password: '1234',
+    phone: '13579202680'
   }), new User({
     name: '测试账户',
     email: 'hello@pku.edu.cn',

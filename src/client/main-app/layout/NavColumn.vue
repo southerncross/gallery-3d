@@ -35,6 +35,10 @@
           <span class="icon-file_upload"></span>
           上传照片
         </div>
+        <div class="nav-column__link waves-effect" v-link="{ name: 'create-blueprint' }">
+          <span class="icon-local_restaurant"></span>
+          新建户型
+        </div>
       </div>
     </div>
   </div>

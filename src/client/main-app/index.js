@@ -6,6 +6,7 @@ import UploadPhotos from './components/UploadPhotos'
 import MyPhotos from './components/MyPhotos'
 import MyGalleries from './components/MyGalleries'
 import CreateGallery from './components/CreateGallery'
+import CreateBlueprint from './components/CreateBlueprint'
 
 Vue.config.debug = true
 Vue.use(Router)
@@ -31,6 +32,11 @@ router.map({
   '/create-gallery': {
     name: 'create-gallery',
     component: CreateGallery
+  },
+
+  '/create-blueprint': {
+    name: 'create-blueprint',
+    component: CreateBlueprint
   }
 })
 

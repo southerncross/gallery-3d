@@ -6,7 +6,8 @@
 
 <script>
 import THREE from 'THREE'
-import '../../vendors/TrackballControls'
+
+import '../../vendors/OrbitControls'
 
 export default {
   name: 'BlueprintViewPanel',
@@ -20,20 +21,15 @@ export default {
 
   data() {
     return {
-      keepRendering: false,
-      renderer: null,
-      clock: null,
-      scene: null,
-      camera: null,
-      moveControl: null
+      keepRendering: false
     }
   },
 
   methods: {
     render() {
-      const { renderer, scene, camera, clock, moveControl, keepRendering } = this
+      const { renderer, scene, camera, clock, cameraControls, keepRendering } = this
       const delta = clock.getDelta()
-      moveControl.update(delta)
+      cameraControls.update(delta)
       if (keepRendering) {
         requestAnimationFrame(this.render)
         renderer.render(scene, camera)
@@ -41,7 +37,6 @@ export default {
     },
 
     drawWalls() {
-      const color = '#EEAA66'
       const wallGeo = new THREE.Geometry()
       this.svg.selectAll('.wall').forEach((wall, idx) => {
         const height = 60
@@ -61,12 +56,11 @@ export default {
 
         const boxGeo = new THREE.BoxGeometry(width, height, depth)
         boxGeo.translate(x, height / 2, y)
-        const boxMat = new THREE.MeshBasicMaterial({ color, wireframe: true })
-        const wallMesh = new THREE.Mesh(boxGeo, boxMat)
+        const wallMesh = new THREE.Mesh(boxGeo)
         wallMesh.updateMatrix()
         wallGeo.merge(wallMesh.geometry, wallMesh.matrix)
       })
-      const wallMat = new THREE.MeshBasicMaterial({ color: '#AAA', wireframe: false })
+      const wallMat = new THREE.MeshLambertMaterial({ color: 0xffffff })
       const wallMesh = new THREE.Mesh(wallGeo, wallMat)
       this.scene.add(wallMesh)
     }
@@ -74,6 +68,8 @@ export default {
 
   ready() {
     const canvasDom = document.getElementById('create-blueprint__canvas--3d')
+
+    this.clock = new THREE.Clock()
 
     const renderer = new THREE.WebGLRenderer()
     renderer.setClearColor(new THREE.Color(0x000000, 1.0))
@@ -92,18 +88,35 @@ export default {
     camera.lookAt(new THREE.Vector3(0, 0, 0))
     this.camera = camera
 
-    const control = new THREE.TrackballControls(camera)
-    control.rotateSpeed = 1.0
-    control.zoomSpeed = 1.0
-    control.panSpeed = 1.0
-    this.moveControl = control
+    const cameraControls = new THREE.OrbitControls(camera, renderer.domElement)
+    cameraControls.target.set(0, 50, 0)
+    this.cameraControls = cameraControls
 
-    const ambiColor = '#0c0c0c'
-    const ambientLight = new THREE.AmbientLight(ambiColor)
-    scene.add(ambientLight)
+    // const ambientLight = new THREE.AmbientLight(0xffffff)
+    // scene.add(ambientLight)
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1)
+    dirLight.color.setHSL(0.1, 1, 0.95)
+    dirLight.position.set(-1, 1.75, 1)
+    dirLight.position.multiplyScalar(50)
+    scene.add(dirLight)
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6)
+    hemiLight.color.setHSL(0.6, 1, 0.6)
+    hemiLight.groundColor.setHSL(0.095, 1, 0.75)
+    hemiLight.position.set(0, 500, 0)
+    scene.add(hemiLight)
 
     const axes = new THREE.AxisHelper(200)
     scene.add(axes)
+
+    const planeMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(200, 200),
+      new THREE.MeshBasicMaterial({ color: 0xcccccc })
+    )
+    planeMesh.receiveShadow = true
+    planeMesh.rotation.x = -0.5 * Math.PI
+    scene.add(planeMesh)
 
     this.drawWalls()
 

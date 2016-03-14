@@ -105,7 +105,8 @@ export default {
       this.drawingLine = svg.line(x1, y1, x2, y2)
       .attr({
         stroke: '#00bcd4',
-        strokeWidth: 5
+        strokeWidth: 5,
+        'class': 'wall'
       })
     }
   },
